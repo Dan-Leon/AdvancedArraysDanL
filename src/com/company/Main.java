@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -21,31 +22,55 @@ public class Main {
 
              switch (userSelection) {
                  case 1:
-                     String item = getItem("Please enter the name of the item you wish to look up: ");
-                     for (int i = 0; i < supplies.length; i++) {
-                         if (supplies[i] == item){
-                             System.out.println(supplies[i]);
-                             for (int j = 0; j < item.length(); j++) {
-                                 char c = item.charAt(j);
-                                 System.out.println("_");
-                             }
-                             System.out.println(inventory[i]);
-                         }
+                     String key = getItem("Please enter the name of the item you wish to look up: ");
+                     int lookUp = Arrays.binarySearch(supplies, key);
+                     if (lookUp >= 0) {
+                         System.out.println(supplies[lookUp] + "\n" + inventory[lookUp] + "\n");
+                     } else {
+                         System.out.println("That item was not found");
                      }
-
-
                      cont = getSelection("Please choose:\n1. Main Menu\n2. Exit");
                      break;
                  case 2:
-
+                     key = getItem("Please enter the name of the item you wish to look up: ");
+                     lookUp = Arrays.binarySearch(supplies, key);
+                     if (lookUp >= 0) {
+                         double dCount = inventory[lookUp];
+                         double addCount = chngAmount("Please enter the amount you would like to add to " +
+                                 "inventory: ");
+                         inventory[lookUp] += addCount;
+                         System.out.println("\t\t\t" + key);
+                         System.out.println("old count:\t" + dCount);
+                         System.out.println("added: \t\t" + addCount);
+                         System.out.println("new count:\t" + inventory[lookUp]);
+                         System.out.println("\n");
+                     } else {
+                         System.out.println("That item was not found");
+                     }
                      cont = getSelection("Please choose:\n1. Main Menu\n2. Exit");
                      break;
                  case 3:
-
+                     key = getItem("Please enter the name of the item you wish to look up: ");
+                     lookUp = Arrays.binarySearch(supplies, key);
+                     if (lookUp >= 0) {
+                         double dCount = inventory[lookUp];
+                         double subCount = chngAmount("Please enter the amount you would like to remove from " +
+                                 "inventory: ");
+                         inventory[lookUp] -= subCount;
+                         System.out.println("\t\t\t" + key);
+                         System.out.println("old count:\t" + dCount);
+                         System.out.println("removed: \t" + subCount);
+                         System.out.println("new count:\t" + inventory[lookUp]);
+                         System.out.println("\n");
+                     } else {
+                         System.out.println("That item was not found");
+                     }
                      cont = getSelection("Please choose:\n1. Main Menu\n2. Exit");
                      break;
                  case 4:
-
+                     for (int index = 0; index < supplies.length; index++){
+                         System.out.println(supplies[index] + "\n" + inventory[index] + "\n");
+                     }
                     cont = getSelection("Please choose:\n1. Main Menu\n2. Exit");
                      break;
                  case 5:
@@ -57,6 +82,7 @@ public class Main {
              }
 
          }
+        System.out.println("You have exited the program.");
     }
 
     private static int getSelection(String sLabel){
@@ -73,8 +99,12 @@ public class Main {
         nItem = sc.next();
         return nItem;
     }
-
-
-
+    private static double chngAmount(String sLabel) {
+        double nItem;
+        Scanner sc = new Scanner(System.in);
+        System.out.print(sLabel);
+        nItem = sc.nextDouble();
+        return nItem;
+    }
 
 }
